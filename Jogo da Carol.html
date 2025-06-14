@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memória da Ana Carolina</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: url('https://i.pinimg.com/originals/c1/2d/ce/c12dce0fe1acef1e60186237da63a2e9.gif') center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Adicionando uma sobreposição semi-transparente para melhor legibilidade */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .title {
+            font-size: 3em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        /* Menu Principal */
+        .menu-screen {
+            display: block;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .menu-section {
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .menu-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .option-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin: 10px;
+            min-width: 200px;
+        }
+
+        .option-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .option-button.selected {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            transform: scale(1.05);
+        }
+
+        .difficulty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .difficulty-button {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+            border: none;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .difficulty-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .difficulty-button.selected {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            transform: scale(1.05);
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 25px;
+            font-size: 1.4em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            margin-top: 30px;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .start-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Tela do Jogo */
+        .game-screen {
+            display: none;
+            width: 100%;
+            max-width: 1400px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .score-board {
+            display: flex;
+            gap: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Modo 1 Jogador */
+        .single-player-board {
+            display: grid;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        /* Cartas do modo single player maiores */
+        .single-player-board .card {
+            width: 90px;
+            height: 90px;
+        }
+
+        .single-player-board .card-content {
+            font-size: 2.2em;
+        }
+
+        .single-player-board .card-back {
+            font-size: 1.8em;
+        }
+
+        /* Modo 2 Jogadores */
+        .two-player-container {
+            display: none;
+            gap: 30px;
+        }
+
+        .player-section {
+            flex: 1;
+            text-align: center;
+            min-width: 0; /* Permite que o flex item encolha */
+        }
+
+        .player-header {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .player-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .player-stats {
+            display: flex;
+            justify-content: space-around;
+            font-size: 1em;
+            color: #666;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .player-board {
+            display: grid;
+            gap: 8px;
+            padding: 15px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .current-player {
+            border: 3px solid #ff6b6b;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+        }
+
+        .card {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .card.flipped {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            transform: rotateY(180deg);
+        }
+
+        .card.matched {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            animation: bounce 0.6s ease;
+        }
+
+        .card-content {
+            font-size: 1.8em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card.flipped .card-content,
+        .card.matched .card-content {
+            opacity: 1;
+        }
+
+        .card-back {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .card.flipped .card-back {
+            opacity: 0;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% {
+                transform: translate3d(0,0,0);
+            }
+            40%, 43% {
+                transform: translate3d(0,-10px,0);
+            }
+            70% {
+                transform: translate3d(0,-5px,0);
+            }
+            90% {
+                transform: translate3d(0,-2px,0);
+            }
+        }
+
+        .win-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 1.8em;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1000;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-top: 20px;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            /* Mobile: Tabuleiros empilhados verticalmente */
+            .two-player-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .card {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .card-content {
+                font-size: 1.4em;
+            }
+            
+            .card-back {
+                font-size: 1.2em;
+            }
+
+            /* Single player mobile */
+            .single-player-board {
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .single-player-board .card {
+                width: 65px;
+                height: 65px;
+            }
+
+            .single-player-board .card-content {
+                font-size: 1.8em;
+            }
+
+            .single-player-board .card-back {
+                font-size: 1.4em;
+            }
+            
+            .title {
+                font-size: 2em;
+            }
+
+            .difficulty-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .option-button {
+                min-width: auto;
+                padding: 15px 25px;
+            }
+
+            .player-name {
+                font-size: 1.2em;
+            }
+
+            .player-stats {
+                font-size: 0.9em;
+                justify-content: center;
+            }
+
+            .player-board {
+                gap: 6px;
+                padding: 10px;
+            }
+
+            .score-board {
+                flex-wrap: wrap;
+                gap: 15px;
+                font-size: 1em;
+            }
+
+            .game-info {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            /* Tablet: Layout otimizado */
+            .two-player-container {
+                gap: 20px;
+            }
+            
+            .card {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .card-content {
+                font-size: 1.6em;
+            }
+
+            .player-board {
+                gap: 6px;
+            }
+
+            /* Single player tablet */
+            .single-player-board .card {
+                width: 80px;
+                height: 80px;
+            }
+
+            .single-player-board .card-content {
+                font-size: 2em;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            /* Desktop: Tabuleiros lado a lado */
+            .two-player-container {
+                flex-direction: row;
+                gap: 30px;
+                align-items: flex-start;
+            }
+
+            .card {
+                width: 70px;
+                height: 70px;
+            }
+
+            .card-content {
+                font-size: 1.8em;
+            }
+
+            .player-board {
+                gap: 8px;
+            }
+
+            /* Single player desktop mantém tamanho maior */
+            .single-player-board .card {
+                width: 90px;
+                height: 90px;
+            }
+
+            .single-player-board .card-content {
+                font-size: 2.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Mobile pequeno: Otimizações extras */
+            .header {
+                margin-bottom: 20px;
+            }
+
+            .title {
+                font-size: 1.8em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .menu-section {
+                padding: 20px;
+                margin: 15px 0;
+            }
+
+            .menu-title {
+                font-size: 1.5em;
+            }
+
+            .option-button {
+                padding: 12px 20px;
+                font-size: 1em;
+                margin: 8px;
+            }
+
+            .difficulty-button {
+                padding: 15px;
+                font-size: 1em;
+            }
+
+            .start-button {
+                padding: 15px 30px;
+                font-size: 1.2em;
+            }
+
+            .card {
+                width: 45px;
+                height: 45px;
+            }
+
+            .card-content {
+                font-size: 1.2em;
+            }
+
+            .card-back {
+                font-size: 1em;
+            }
+
+            /* Single player mobile pequeno */
+            .single-player-board {
+                gap: 8px;
+                padding: 12px;
+            }
+
+            .single-player-board .card {
+                width: 55px;
+                height: 55px;
+            }
+
+            .single-player-board .card-content {
+                font-size: 1.5em;
+            }
+
+            .single-player-board .card-back {
+                font-size: 1.2em;
+            }
+
+            .player-name {
+                font-size: 1.1em;
+            }
+
+            .player-stats {
+                font-size: 0.8em;
+            }
+
+            .player-board {
+                gap: 4px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">🌟 Memória da Ana Carolina 🌟</h1>
+        <p class="subtitle">Encontre os pares das suas coisas favoritas!</p>
+    </div>
+
+    <!-- Menu Principal -->
+    <div class="menu-screen" id="menuScreen">
+        <div class="menu-section">
+            <div class="menu-title">🎮 Escolha o Modo de Jogo</div>
+            <button class="option-button" onclick="selectGameMode(1)">
+                👤 1 Jogador
+            </button>
+            <button class="option-button" onclick="selectGameMode(2)">
+                👥 2 Jogadores
+            </button>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-title">⚡ Escolha a Dificuldade</div>
+            <div class="difficulty-grid">
+                <button class="difficulty-button" onclick="selectDifficulty('facil')">
+                    😊 Fácil<br>
+                    <small>3x4 (6 pares)</small>
+                </button>
+                <button class="difficulty-button" onclick="selectDifficulty('medio')">
+                    🤔 Médio<br>
+                    <small>4x4 (8 pares)</small>
+                </button>
+                <button class="difficulty-button" onclick="selectDifficulty('dificil')">
+                    😤 Difícil<br>
+                    <small>4x5 (10 pares)</small>
+                </button>
+            </div>
+        </div>
+
+        <button class="start-button" id="startButton" onclick="startGame()" disabled>
+            🚀 Começar Jogo!
+        </button>
+    </div>
+
+    <!-- Tela do Jogo -->
+    <div class="game-screen" id="gameScreen">
+        <!-- Modo 1 Jogador -->
+        <div id="singlePlayerMode">
+            <div class="game-info">
+                <div class="score-board">
+                    <div>⏰ Tempo: <span id="timer">00:00</span></div>
+                    <div>🎯 Movimentos: <span id="moves">0</span></div>
+                    <div>⭐ Pares: <span id="pairs">0/8</span></div>
+                </div>
+                <button class="restart-btn" onclick="backToMenu()">🔙 Menu</button>
+            </div>
+            <div class="single-player-board" id="singleBoard"></div>
+        </div>
+
+        <!-- Modo 2 Jogadores -->
+        <div class="two-player-container" id="twoPlayerMode">
+            <div class="player-section">
+                <div class="player-header" id="player1Header">
+                    <div class="player-name">🌟 Jogador 1</div>
+                    <div class="player-stats">
+                        <span>⭐ Pares: <span id="player1Pairs">0</span></span>
+                        <span>🎯 Jogadas: <span id="player1Moves">0</span></span>
+                    </div>
+                </div>
+                <div class="player-board" id="player1Board"></div>
+            </div>
+
+            <div class="player-section">
+                <div class="player-header" id="player2Header">
+                    <div class="player-name">⭐ Jogador 2</div>
+                    <div class="player-stats">
+                        <span>⭐ Pares: <span id="player2Pairs">0</span></span>
+                        <span>🎯 Jogadas: <span id="player2Moves">0</span></span>
+                    </div>
+                </div>
+                <div class="player-board" id="player2Board"></div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="restart-btn" onclick="backToMenu()">🔙 Voltar ao Menu</button>
+        </div>
+    </div>
+
+    <div class="win-message" id="winMessage">
+        <div id="winText">🎉 Parabéns! 🎉</div>
+        <div style="font-size: 0.8em; margin-top: 15px;" id="winDetails"></div>
+        <button class="restart-btn" onclick="backToMenu()">🏠 Menu Principal</button>
+        <button class="restart-btn" onclick="startGame()">🔄 Jogar Novamente</button>
+    </div>
+
+    <script>
+        const gameItems = {
+            facil: [
+                { emoji: '🎀', name: 'Laço' },
+                { emoji: '🧸', name: 'Ursinho' },
+                { emoji: '🍰', name: 'Bolo' },
+                { emoji: '🌸', name: 'Flor' },
+                { emoji: '👑', name: 'Coroa' },
+                { emoji: '🦄', name: 'Unicórnio' }
+            ],
+            medio: [
+                { emoji: '🎀', name: 'Laço' },
+                { emoji: '🧸', name: 'Ursinho' },
+                { emoji: '🍰', name: 'Bolo' },
+                { emoji: '🌸', name: 'Flor' },
+                { emoji: '👑', name: 'Coroa' },
+                { emoji: '🦄', name: 'Unicórnio' },
+                { emoji: '🍓', name: 'Morango' },
+                { emoji: '🎨', name: 'Tinta' }
+            ],
+            dificil: [
+                { emoji: '🎀', name: 'Laço' },
+                { emoji: '🧸', name: 'Ursinho' },
+                { emoji: '🍰', name: 'Bolo' },
+                { emoji: '🌸', name: 'Flor' },
+                { emoji: '👑', name: 'Coroa' },
+                { emoji: '🦄', name: 'Unicórnio' },
+                { emoji: '🍓', name: 'Morango' },
+                { emoji: '🎨', name: 'Tinta' },
+                { emoji: '🎵', name: 'Música' },
+                { emoji: '🌈', name: 'Arco-íris' }
+            ]
+        };
+
+        const gridConfig = {
+            facil: { cols: 3, rows: 4 },
+            medio: { cols: 4, rows: 4 },
+            dificil: { cols: 4, rows: 5 }
+        };
+
+        let selectedGameMode = null;
+        let selectedDifficulty = null;
+        let gameBoard = [];
+        let player1Board = [];
+        let player2Board = [];
+        let flippedCards = [];
+        let currentPlayer = 1;
+        let gameStats = {
+            player1: { pairs: 0, moves: 0 },
+            player2: { pairs: 0, moves: 0 },
+            single: { pairs: 0, moves: 0, timer: 0 }
+        };
+        let timerInterval;
+        let gameStarted = false;
+
+        function selectGameMode(mode) {
+            selectedGameMode = mode;
+            
+            // Atualizar botões de modo
+            document.querySelectorAll('.option-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            
+            updateStartButton();
+        }
+
+        function selectDifficulty(difficulty) {
+            selectedDifficulty = difficulty;
+            
+            // Atualizar botões de dificuldade
+            document.querySelectorAll('.difficulty-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            
+            updateStartButton();
+        }
+
+        function updateStartButton() {
+            const startBtn = document.getElementById('startButton');
+            if (selectedGameMode && selectedDifficulty) {
+                startBtn.disabled = false;
+            } else {
+                startBtn.disabled = true;
+            }
+        }
+
+        function startGame() {
+            document.getElementById('menuScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            
+            if (selectedGameMode === 1) {
+                initSinglePlayerGame();
+            } else {
+                initTwoPlayerGame();
+            }
+        }
+
+        function initSinglePlayerGame() {
+            document.getElementById('singlePlayerMode').style.display = 'block';
+            document.getElementById('twoPlayerMode').style.display = 'none';
+            
+            // Setup do jogo
+            const items = gameItems[selectedDifficulty];
+            gameBoard = [...items, ...items];
+            shuffleArray(gameBoard);
+            
+            // Reset stats
+            gameStats.single = { pairs: 0, moves: 0, timer: 0 };
+            flippedCards = [];
+            gameStarted = false;
+            
+            if (timerInterval) clearInterval(timerInterval);
+            
+            createSinglePlayerBoard();
+            updateSinglePlayerDisplay();
+        }
+
+        function initTwoPlayerGame() {
+            document.getElementById('singlePlayerMode').style.display = 'none';
+            document.getElementById('twoPlayerMode').style.display = 'flex';
+            
+            // Setup dos tabuleiros
+            const items = gameItems[selectedDifficulty];
+            player1Board = [...items, ...items];
+            player2Board = [...items, ...items];
+            shuffleArray(player1Board);
+            shuffleArray(player2Board);
+            
+            // Reset stats
+            gameStats.player1 = { pairs: 0, moves: 0 };
+            gameStats.player2 = { pairs: 0, moves: 0 };
+            currentPlayer = 1;
+            flippedCards = [];
+            
+            createTwoPlayerBoards();
+            updateTwoPlayerDisplay();
+            updateCurrentPlayer();
+        }
+
+        function createSinglePlayerBoard() {
+            const board = document.getElementById('singleBoard');
+            const config = gridConfig[selectedDifficulty];
+            
+            board.style.gridTemplateColumns = `repeat(${config.cols}, 1fr)`;
+            board.innerHTML = '';
+            
+            gameBoard.forEach((item, index) => {
+                const card = createCard(item, index, 'single');
+                board.appendChild(card);
+            });
+        }
+
+        function createTwoPlayerBoards() {
+            const config = gridConfig[selectedDifficulty];
+            
+            // Player 1 Board
+            const p1Board = document.getElementById('player1Board');
+            p1Board.style.gridTemplateColumns = `repeat(${config.cols}, 1fr)`;
+            p1Board.innerHTML = '';
+            
+            player1Board.forEach((item, index) => {
+                const card = createCard(item, index, 'player1');
+                p1Board.appendChild(card);
+            });
+            
+            // Player 2 Board
+            const p2Board = document.getElementById('player2Board');
+            p2Board.style.gridTemplateColumns = `repeat(${config.cols}, 1fr)`;
+            p2Board.innerHTML = '';
+            
+            player2Board.forEach((item, index) => {
+                const card = createCard(item, index, 'player2');
+                p2Board.appendChild(card);
+            });
+        }
+
+        function createCard(item, index, player) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.index = index;
+            card.dataset.item = item.name;
+            card.dataset.player = player;
+            
+            card.innerHTML = `
+                <div class="card-back">✨</div>
+                <div class="card-content">${item.emoji}</div>
+            `;
+            
+            card.addEventListener('click', () => flipCard(index, player));
+            return card;
+        }
+
+        function flipCard(index, player) {
+            // Verificações para modo 2 jogadores
+            if (selectedGameMode === 2) {
+                if ((currentPlayer === 1 && player !== 'player1') || 
+                    (currentPlayer === 2 && player !== 'player2')) {
+                    return; // Não é a vez deste jogador
+                }
+            }
+            
+            const card = document.querySelector(`[data-index="${index}"][data-player="${player}"]`);
+            
+            if (card.classList.contains('flipped') || card.classList.contains('matched')) {
+                return;
+            }
+            
+            if (flippedCards.length >= 2) {
+                return;
+            }
+            
+            // Iniciar timer para modo single player
+            if (selectedGameMode === 1 && !gameStarted) {
+                startTimer();
+                gameStarted = true;
+            }
+            
+            card.classList.add('flipped');
+            flippedCards.push({ index, player, card });
+            
+            // Incrementar movimentos
+            if (selectedGameMode === 1) {
+                gameStats.single.moves++;
+                updateSinglePlayerDisplay();
+            } else {
+                gameStats[`player${currentPlayer}`].moves++;
+                updateTwoPlayerDisplay();
+            }
+            
+            if (flippedCards.length === 2) {
+                setTimeout(checkMatch, 1000);
+            }
+        }
+
+        function checkMatch() {
+            const [first, second] = flippedCards;
+            const board = selectedGameMode === 1 ? gameBoard : 
+                         (currentPlayer === 1 ? player1Board : player2Board);
+            
+            if (board[first.index].name === board[second.index].name) {
+                // Match!
+                first.card.classList.remove('flipped');
+                first.card.classList.add('matched');
+                second.card.classList.remove('flipped');
+                second.card.classList.add('matched');
+                
+                if (selectedGameMode === 1) {
+                    gameStats.single.pairs++;
+                    updateSinglePlayerDisplay();
+                    
+                    if (gameStats.single.pairs === gameItems[selectedDifficulty].length) {
+                        setTimeout(showWinMessage, 500);
+                    }
+                } else {
+                    gameStats[`player${currentPlayer}`].pairs++;
+                    updateTwoPlayerDisplay();
+                    
+                    if (gameStats[`player${currentPlayer}`].pairs === gameItems[selectedDifficulty].length) {
+                        setTimeout(() => showWinMessage(`player${currentPlayer}`), 500);
+                    }
+                    // Jogador continua jogando se acertou
+                }
+            } else {
+                // Não match
+                first.card.classList.remove('flipped');
+                second.card.classList.remove('flipped');
+                
+                // Trocar jogador no modo 2 players
+                if (selectedGameMode === 2) {
+                    currentPlayer = currentPlayer === 1 ? 2 : 1;
+                    updateCurrentPlayer();
+                }
+            }
+            
+            flippedCards = [];
+        }
+
+        function updateCurrentPlayer() {
+            document.getElementById('player1Header').classList.remove('current-player');
+            document.getElementById('player2Header').classList.remove('current-player');
+            document.getElementById(`player${currentPlayer}Header`).classList.add('current-player');
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                gameStats.single.timer++;
+                updateSinglePlayerDisplay();
+            }, 1000);
+        }
+
+        function updateSinglePlayerDisplay() {
+            document.getElementById('timer').textContent = formatTime(gameStats.single.timer);
+            document.getElementById('moves').textContent = gameStats.single.moves;
+            document.getElementById('pairs').textContent = 
+                `${gameStats.single.pairs}/${gameItems[selectedDifficulty].length}`;
+        }
+
+        function updateTwoPlayerDisplay() {
+            document.getElementById('player1Pairs').textContent = gameStats.player1.pairs;
+            document.getElementById('player1Moves').textContent = gameStats.player1.moves;
+            document.getElementById('player2Pairs').textContent = gameStats.player2.pairs;
+            document.getElementById('player2Moves').textContent = gameStats.player2.moves;
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function showWinMessage(winner = null) {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            const winText = document.getElementById('winText');
+            const winDetails = document.getElementById('winDetails');
+            
+            if (selectedGameMode === 1) {
+                winText.textContent = '🎉 Parabéns, Ana Carolina! 🎉';
+                winDetails.textContent = 
+                    `Você completou o jogo em ${formatTime(gameStats.single.timer)} com ${gameStats.single.moves} movimentos!`;
+            } else {
+                const playerNum = winner.replace('player', '');
+                winText.textContent = `🏆 Jogador ${playerNum} Venceu! 🏆`;
+                winDetails.textContent = 
+                    `Parabéns! Você fez ${gameStats[winner].pairs} pares com ${gameStats[winner].moves} jogadas!`;
+            }
+            
+            document.getElementById('winMessage').style.display = 'block';
+        }
+
+        function backToMenu() {
+            document.getElementById('winMessage').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('menuScreen').style.display = 'block';
+            
+            if (timerInterval) clearInterval(timerInterval);
+            
+            // Reset seleções
+            selectedGameMode = null;
+            selectedDifficulty = null;
+            document.querySelectorAll('.option-button, .difficulty-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.getElementById('startButton').disabled = true;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+    </script>
+</body>
+</html>
